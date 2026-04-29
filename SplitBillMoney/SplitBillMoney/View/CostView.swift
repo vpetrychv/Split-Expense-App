@@ -17,35 +17,56 @@ struct CostView: View {
     
     var body: some View {
         NavigationStack {
-            
             List {
-                
-                // MARK: - Costs section
-                Section(header: Text("Select participants")) {
-                    ForEach(viewModel.costs) { cost in
-                        
+                // MARK: - COSTS
+                Section(header: Text("Costs")) {
+                    ForEach(viewModel.sortedCosts) { cost in
                         NavigationLink {
                             CostDetailView(cost: cost)
                                 .environmentObject(viewModel)
                         } label: {
                             VStack(alignment: .leading, spacing: 4) {
                                 
-                                Text(cost.title)
-                                    .font(.headline)
+                                HStack {
+                                    Text(cost.title)
+                                        .font(.headline)
+                                    
+                                    if cost.isPinned {
+                                        Image(systemName: "pin.fill")
+                                            .foregroundColor(.yellow)
+                                    }
+                                }
                                 
                                 Text("\(cost.amount, specifier: "%.2f") €")
                                     .foregroundColor(.gray)
                                 
-                                Text("Participants: \(cost.participants.count)")
+                                Text(participantText(for: cost))
                                     .font(.caption)
                                     .foregroundColor(.secondary)
+                                    .lineLimit(2)
                             }
                         }
+                        .swipeActions(edge: .leading) {
+                            Button {
+                                viewModel.pinCost(cost)
+                            } label: {
+                                Label(cost.isPinned ? "Unpin" : "Pin",
+                                      systemImage: "pin")
+                            }
+                            .tint(.yellow)
+                        }
+                        .swipeActions(edge: .trailing) {
+                            Button(role: .destructive) {
+                                viewModel.deleteCost(cost)
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                            .tint(.red)
+                        }
                     }
-                    .onDelete(perform: viewModel.deleteCost)
                 }
                 
-                // MARK: - Totals section
+                // MARK: - TOTALS
                 Section(header: Text("Total per person")) {
                     ForEach(viewModel.people) { person in
                         HStack {
@@ -60,19 +81,20 @@ struct CostView: View {
                 }
             }
             .navigationTitle("Check")
-            .navigationBarTitleDisplayMode(.inline) // 👈 фікс руху
-//            .toolbar {
-//                ToolbarItemGroup(placement: .keyboard) {
-//                    Spacer()
-//                    Button("Done") {
-//                        viewModel.hideKeyboard()
-//                    }
-//                }
-//            }
-
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
+    
+    // MARK: - Helper
+    private func participantText(for cost: Cost) -> String {
+        let names = cost.participants.compactMap { id in
+            viewModel.people.first(where: { $0.id == id })?.name
+        }
+        
+        return "Participants: \(names.count) — \(names.joined(separator: ", "))"
+    }
 }
+
 
 #Preview {
     CostView()

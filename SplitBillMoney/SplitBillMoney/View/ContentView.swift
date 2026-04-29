@@ -11,7 +11,6 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            
             HomeView()
                 .tabItem {
                     Label("Home", systemImage: "house.fill")
@@ -25,6 +24,10 @@ struct ContentView: View {
             CostView()
                 .tabItem{
                     Label("Bill", systemImage: "book.pages")
+                }
+            InstructionView()
+                .tabItem{
+                    Label("Instruction", systemImage: "info.circle.text.page.fill")
                 }
         }
         .tint(.blue)

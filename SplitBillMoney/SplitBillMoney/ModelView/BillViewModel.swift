@@ -46,7 +46,7 @@ final class BillViewModel: ObservableObject {
             self.costs = decodedCosts
         }
     }
-
+    
     func addPerson() {
         let trimmed = personName.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
@@ -54,12 +54,23 @@ final class BillViewModel: ObservableObject {
         personName = ""
         saveData()
     }
-
-    func deletePerson(at offsets: IndexSet) {
-        people.remove(atOffsets: offsets)
+    
+    func pinPerson(_ person: Person) {
+        if let index = people.firstIndex(where: { $0.id == person.id }) {
+            people[index].isPinned.toggle()
+            saveData()
+        }
+    }
+    
+    func deletePerson(_ person: Person) {
+        people.removeAll { $0.id == person.id }
         saveData()
     }
-
+    
+    var sortedPeople: [Person] {
+        people.sorted { $0.isPinned && !$1.isPinned }
+    }
+    
     func togglePersonSelection(_ person: Person) {
         if selectedPeople.contains(person.id) {
             selectedPeople.remove(person.id)
@@ -67,7 +78,7 @@ final class BillViewModel: ObservableObject {
             selectedPeople.insert(person.id)
         }
     }
-
+    
     func addCost() {
         let title = costTitle.trimmingCharacters(in: .whitespacesAndNewlines)
         let amountValue = Double(costAmount.replacingOccurrences(of: ",", with: ".")) ?? 0
@@ -85,7 +96,7 @@ final class BillViewModel: ObservableObject {
         selectedPeople.removeAll()
         saveData()
     }
-
+    
     func updateCost(id: UUID, title: String, amount: Double, participants: [UUID]) {
         if let index = costs.firstIndex(where: { $0.id == id }) {
             costs[index].title = title
@@ -94,12 +105,23 @@ final class BillViewModel: ObservableObject {
             saveData()
         }
     }
-
-    func deleteCost(at offsets: IndexSet) {
-        costs.remove(atOffsets: offsets)
+    
+    func deleteCost(_ cost: Cost) {
+        costs.removeAll { $0.id == cost.id }
         saveData()
     }
-
+    
+    func pinCost(_ cost: Cost) {
+        if let index = costs.firstIndex(where: { $0.id == cost.id }) {
+            costs[index].isPinned.toggle()
+            saveData()
+        }
+    }
+    
+    var sortedCosts: [Cost] {
+        costs.sorted { $0.isPinned && !$1.isPinned }
+    }
+    
     func totalPerPerson() -> [UUID: Double] {
         var result: [UUID: Double] = [:]
         for cost in costs {
@@ -110,23 +132,14 @@ final class BillViewModel: ObservableObject {
         }
         return result
     }
-
+    
     func result() -> Double {
         let total = Double(amount.replacingOccurrences(of: ",", with: ".")) ?? 0
         let count = Int(peopleCount) ?? 0
         guard count > 0 else { return 0 }
         return total / Double(count)
     }
-
-//    func hideKeyboard() {
-//        UIApplication.shared.sendAction(
-//            #selector(UIResponder.resignFirstResponder),
-//            to: nil,
-//            from: nil,
-//            for: nil
-//        )
-//    }
 }
-    
+
 
 

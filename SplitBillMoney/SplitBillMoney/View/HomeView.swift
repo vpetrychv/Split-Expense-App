@@ -21,12 +21,16 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
-                
                 Text("Split Bill")
                     .font(.largeTitle)
                     .fontWeight(.light)
                 
                 TextField("Amount", text: $viewModel.amount)
+                    .onChange(of: viewModel.amount) { newValue in
+                        viewModel.amount = newValue.filter {
+                            $0.isNumber || $0 == "." || $0 == ","
+                        }
+                    }
                     .padding()
                     .background(.regularMaterial)
                     .clipShape(Capsule())
@@ -37,6 +41,9 @@ struct HomeView: View {
                     .padding(.horizontal)
                 
                 TextField("Number of people", text: $viewModel.peopleCount)
+                    .onChange(of: viewModel.peopleCount) { newValue in
+                        viewModel.peopleCount = newValue.filter { $0.isNumber }
+                    }
                     .padding()
                     .background(.regularMaterial)
                     .clipShape(Capsule())

@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct ParticipantsView: View {
     
     @EnvironmentObject var viewModel: BillViewModel
@@ -25,8 +24,6 @@ struct ParticipantsView: View {
                                 .stroke(.white.opacity(0.25))
                         )
                         .padding(.horizontal, 3)
-                    
-                    
                     Button {
                         viewModel.addPerson()
                     } label: {
@@ -41,9 +38,7 @@ struct ParticipantsView: View {
                     .padding(.horizontal, 3)
                 }
                 .padding(.horizontal)
-                
-                VStack(spacing: 10) {
-                    
+                VStack(spacing: 15) {
                     HStack{
                         TextField("Expense Name", text: $viewModel.costTitle)
                             .padding(10)
@@ -77,10 +72,9 @@ struct ParticipantsView: View {
                                 .stroke(.white.opacity(0.25))
                         )
                         .padding(.horizontal, 3)
-                    
                     Section(header: Text("Person")) {
                         List {
-                            ForEach(viewModel.people) { person in
+                            ForEach(viewModel.sortedPeople) { person in
                                 HStack {
                                     Text(person.name)
                                     
@@ -90,19 +84,38 @@ struct ParticipantsView: View {
                                         Image(systemName: "checkmark.circle.fill")
                                             .foregroundColor(.green)
                                     }
+                                    
+                                    if person.isPinned {
+                                        Image(systemName: "pin.fill")
+                                            .foregroundColor(.yellow)
+                                    }
                                 }
                                 .contentShape(Rectangle())
                                 .onTapGesture {
                                     viewModel.togglePersonSelection(person)
                                 }
+                                .swipeActions(edge: .leading) {
+                                    Button {
+                                        viewModel.pinPerson(person)
+                                    } label: {
+                                        Label(person.isPinned ? "Unpin" : "Pin",
+                                              systemImage: "pin")
+                                    }
+                                    .tint(.yellow)
+                                }
+                                
+                                .swipeActions(edge: .trailing) {
+                                    Button(role: .destructive) {
+                                        viewModel.deletePerson(person)
+                                    } label: {
+                                        Label("Delete", systemImage: "trash")
+                                    }
+                                    .tint(.red)
+                                }
                             }
-                            .onDelete(perform: viewModel.deletePerson)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        
-                        Spacer()
-                    }
-                }
+                    }                }
                 .padding(.horizontal)
                 
             }

@@ -11,6 +11,7 @@ import Combine
 struct Person: Identifiable, Codable, Equatable {
     let id: UUID
     var name: String
+    var isPinned: Bool = false
 
     init(id: UUID = UUID(), name: String) {
         self.id = id
@@ -23,6 +24,8 @@ struct Cost: Identifiable, Codable {
     var title: String
     var amount: Double
     var participants: [UUID]
+    var isPinned: Bool = false
+   
 
     init(id: UUID = UUID(), title: String, amount: Double, participants: [UUID]) {
         self.id = id
