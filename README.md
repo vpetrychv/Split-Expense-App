@@ -18,14 +18,16 @@ Easily track shared costs, add participants, and manage balances.
 - Pin system for people and expenses
 - Participants view shows both count and names
 - General UI improvements and bug fixes
+- Added app logo for improved branding consistency
 
 ## Screenshots
 
 <p float="left">
-  <img src="https://github.com/vpetrychv/Split-Expense-App/blob/114eec9f9634076cf06508b6b8388840893a6b5d/SplitBillMoney/Image/1.jpg" width="200"/>
-  <img src="https://github.com/vpetrychv/Split-Expense-App/blob/114eec9f9634076cf06508b6b8388840893a6b5d/SplitBillMoney/Image/2.jpg" width="200"/>
-  <img src="https://github.com/vpetrychv/Split-Expense-App/blob/114eec9f9634076cf06508b6b8388840893a6b5d/SplitBillMoney/Image/3.jpg" width="200"/>
-  <img src="https://github.com/vpetrychv/Split-Expense-App/blob/114eec9f9634076cf06508b6b8388840893a6b5d/SplitBillMoney/Image/4.jpg" width="200"/>
+  <img src="https://github.com/vpetrychv/Split-Expense-App/blob/3cbf56152af61d5ebad97fd9b8d5a54b64044833/SplitBillMoney/Image/1.jpg" width="200"/>
+  <img src="https://github.com/vpetrychv/Split-Expense-App/blob/3cbf56152af61d5ebad97fd9b8d5a54b64044833/SplitBillMoney/Image/2.jpg" width="200"/>
+  <img src="https://github.com/vpetrychv/Split-Expense-App/blob/3cbf56152af61d5ebad97fd9b8d5a54b64044833/SplitBillMoney/Image/3.jpg" width="200"/>
+  <img src="https://github.com/vpetrychv/Split-Expense-App/blob/3cbf56152af61d5ebad97fd9b8d5a54b64044833/SplitBillMoney/Image/4.jpg" width="200"/>
+  <img src="https://github.com/vpetrychv/Split-Expense-App/blob/3cbf56152af61d5ebad97fd9b8d5a54b64044833/SplitBillMoney/Image/5.jpg" width="200"/>
 </p>
 
 ## Tech Stack
